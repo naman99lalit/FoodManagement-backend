@@ -26,11 +26,15 @@ app.get('/',(req,res)=>{
   res.send('API is working!');
 });
 app.post('/app',(req, res) => {
+  var currentDate = new Date()
+  var currentOffset = currentDate.getTimezoneOffset();
+  var ISTOffset = 330
+  currentDate = new Date(currentDate.getTime() + (ISTOffset + currentOffset)*60000)
   var now = new Date().getHours()
   console.log(now)
-  var date = new Date().getDate() + 1
-  var date1= new Date().getDate()
-  var dateString = date.toString() +'/' + (new Date().getMonth()+1).toString() + '/' + new Date().getFullYear()
+  var date = currentDate.getDate() + 1
+  var date1= currentDate.getDate()
+  var dateString = date.toString() +'/' + (currentDate.getMonth()+1).toString() + '/' + currentDate.getFullYear()
   if(now >= 21 && now < 24) {
     var app= new App({
       date: dateString,
@@ -52,7 +56,7 @@ app.post('/app',(req, res) => {
       .then(user => res.send(user))
   }
   else {
-    var rightNow = new Date()
+    var rightNow = currentDate
     return res.send(`Cannot book a meal at this hour: ${rightNow}`)
   }
   console.log(dateString)
