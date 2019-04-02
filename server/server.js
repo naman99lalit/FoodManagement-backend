@@ -52,7 +52,7 @@ app.post('/app',(req, res) => {
       .then(user => res.send(user))
   }
   else {
-    return res.send(now)
+    return res.send(`Cannot book a meal at this hour: ${now}`)
   }
   console.log(dateString)
 
