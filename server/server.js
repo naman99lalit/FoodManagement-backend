@@ -26,10 +26,12 @@ app.get('/',(req,res)=>{
   res.send('API is working!');
 });
 app.post('/app',(req, res) => {
+  // GET Indian Time
   var currentDate = new Date()
   var currentOffset = currentDate.getTimezoneOffset();
   var ISTOffset = 330
   currentDate = new Date(currentDate.getTime() + (ISTOffset + currentOffset)*60000)
+
   var now = new Date().getHours()
   console.log(now)
   var date = currentDate.getDate() + 1
@@ -47,8 +49,11 @@ app.post('/app',(req, res) => {
       res.status(400).send(e);
     });
   }
-  else if (now > 9 && now < 12) {
-    App.findOneAndUpdate({rollNumber: req.body.rollNumber}, {$set: {lunch: true}})
+  else if (now >= 9 && now < 12) {
+    console.log('Here')
+    var today = date1 + '/' + (currentDate.getMonth()+1).toString() + '/' + currentDate.getFullYear()
+    console.log(today)
+    App.findOneAndUpdate({rollNumber: req.body.rollNumber, date: today}, {$set: {lunch: true}})
       .then(user => res.send(user))
   }
   else if(now > 14 && now < 17){
