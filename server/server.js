@@ -22,6 +22,9 @@ app.post('/login',(req,res)=>{
     res.status(400).send(e);
   });
 });
+app.get('/',(req,res)=>{
+  res.send('API is working!');
+});
 app.post('/app',(req, res) => {
   var now = new Date().getHours()
   console.log(now)
