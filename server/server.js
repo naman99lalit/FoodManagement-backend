@@ -52,7 +52,8 @@ app.post('/app',(req, res) => {
       .then(user => res.send(user))
   }
   else {
-    return res.send(`Cannot book a meal at this hour: ${now}`)
+    var rightNow = new Date()
+    return res.send(`Cannot book a meal at this hour: ${rightNow}`)
   }
   console.log(dateString)
 
