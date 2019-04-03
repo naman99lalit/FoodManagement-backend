@@ -1,13 +1,32 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const expressLayouts = require('express-ejs-layouts');
+const mongoose = require('mongoose');
 
-var {mongoose} = require('./db/mongoose');
 var {App} = require('./models/app');
 var {Login}= require('./models/login');
 
-var app = express();
+const app = express();
 
+//DB Config
+const db = require('./config/keys').MongoURI;
+
+//Connect to Mongo
+mongoose.connect(db,{ useNewUrlParser: true})
+.then(()=>console.log('MongoDB Connected'))
+.catch(err => console.log(err));
+
+//ejs
+app.use(expressLayouts);
+app.set('view engine', 'ejs');
+
+//BodyParser
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//Routes
+app.use('/', require('./routes/index'));
+app.use('/users', require('./routes/users'));
 
 app.post('/login',(req,res)=>{
   var login = new Login({
@@ -21,9 +40,6 @@ app.post('/login',(req,res)=>{
   },(e)=>{
     res.status(400).send(e);
   });
-});
-app.get('/',(req,res)=>{
-  res.send('API is working!');
 });
 app.post('/app',(req, res) => {
   // GET Indian Time
