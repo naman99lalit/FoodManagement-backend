@@ -98,7 +98,14 @@ app.post('/app',(req, res) => {
     return res.send(`Cannot book a meal at this hour: ${rightNow}`)
   }
   console.log(dateString)
+});
 
+app.get('/app',(req,res)=>{
+  App.find({breakfast:req.body.breakfast, lunch: req.body.lunch, dinner: req.body.dinner}).then((app)=>{
+    res.send({app});
+  },(e)=>{
+    res.status(400).send(e);
+  });
 });
 var port = process.env.PORT || 3000
 app.listen(port, ()=>{
